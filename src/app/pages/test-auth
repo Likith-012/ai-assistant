@@ -1,0 +1,30 @@
+import { auth } from "@/lib/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useState } from "react";
+
+export default function TestAuth() {
+  const [loading, setLoading] = useState(false);
+
+  const testAuth = async () => {
+    setLoading(true);
+    try {
+      await signInWithEmailAndPassword(auth, "test@test.com", "123456");
+      alert("Auth works! Check console for user details.");
+      console.log("Current user:", auth.currentUser?.email);
+    } catch (error) {
+      alert(`Error: ${error.message}`);
+      console.error("Auth error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div>
+      <h1>Auth Test Page</h1>
+      <button onClick={testAuth} disabled={loading}>
+        {loading ? "Signing in..." : "Test Auth"}
+      </button>
+    </div>
+  );
+}
